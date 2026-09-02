@@ -33,7 +33,157 @@
 
     <!-- Main Logic Container -->
     <div class="w-full max-w-2xl glass-card p-6 md:p-8 mb-8">
-        <p class='text-red-500 font-bold text-center'>서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.</p>
+        <div class="p-8">
+    <h2 class="text-3xl font-bold text-white mb-6 text-center">OTT 구독료 더치페이 정산기</h2>
+    <p class="text-gray-300 text-center mb-8">넷플릭스, 티빙 등 파티원들의 1인당 더치페이 금액을 자동으로 정산해 드립니다.</p>
+
+    <form id="dutchPayForm" class="space-y-6">
+        <!-- OTT Service Name Input -->
+        <div class="relative">
+            <label for="serviceName" class="block text-gray-200 text-sm font-semibold mb-2">OTT 서비스명</label>
+            <input type="text" id="serviceName" name="serviceName" placeholder="예: 넷플릭스 프리미엄"
+                   class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                   value="넷플릭스" required>
+        </div>
+
+        <!-- Total Subscription Fee Input -->
+        <div class="relative">
+            <label for="totalFee" class="block text-gray-200 text-sm font-semibold mb-2">총 구독료 (원)</label>
+            <input type="number" id="totalFee" name="totalFee" min="1" step="100" placeholder="총 월 구독료를 입력하세요 (예: 17000)"
+                   class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                   required>
+        </div>
+
+        <!-- Total Party Members Input -->
+        <div class="relative">
+            <label for="totalMembers" class="block text-gray-200 text-sm font-semibold mb-2">전체 파티원 수</label>
+            <input type="number" id="totalMembers" name="totalMembers" min="1" placeholder="파티원 전체 인원수를 입력하세요 (본인 포함)"
+                   class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                   required>
+        </div>
+
+        <!-- My Share Count Input -->
+        <div class="relative mb-6">
+            <label for="myShareCount" class="block text-gray-200 text-sm font-semibold mb-2">나의 지분 (개인/계정 수)</label>
+            <input type="number" id="myShareCount" name="myShareCount" min="1" value="1" placeholder="내가 부담할 인원/계정 수"
+                   class="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200"
+                   required>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition-colors duration-200 transform hover:scale-105 active:scale-95">
+            정산하기
+        </button>
+    </form>
+
+    <!-- Receipt Section -->
+    <div id="receipt" class="receipt mt-8 p-6 bg-white rounded-lg shadow-xl border-2 border-dashed border-gray-300 text-gray-800 hidden">
+        <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">✨ 정산 결과 ✨</h3>
+        <hr class="border-t border-dashed border-gray-300 my-4">
+        <div class="space-y-3 text-gray-700 text-lg">
+            <p><strong class="font-semibold text-gray-900">서비스명:</strong> <span id="receiptServiceName" class="ml-2 font-medium"></span></p>
+            <p><strong class="font-semibold text-gray-900">총 구독료:</strong> <span id="receiptTotalFee" class="ml-2 font-medium text-red-600"></span> 원</p>
+            <p><strong class="font-semibold text-gray-900">전체 파티원:</strong> <span id="receiptTotalMembers" class="ml-2 font-medium"></span> 명</p>
+            <p><strong class="font-semibold text-gray-900">나의 지분:</strong> <span id="receiptMyShareCount" class="ml-2 font-medium"></span> 개</p>
+            <hr class="border-t border-dashed border-gray-300 my-4">
+            <p class="text-xl"><strong class="font-semibold text-gray-900">1인당 정산 금액:</strong> <span id="receiptPerPersonAmount" class="font-bold text-blue-600 ml-2"></span> 원</p>
+            <p class="text-2xl mt-4"><strong class="font-semibold text-gray-900">내가 낼 금액:</strong> <span id="receiptMyAmount" class="font-extrabold text-red-700 ml-2"></span> 원</p>
+        </div>
+        <hr class="border-t border-dashed border-gray-300 my-4">
+        <p class="text-sm text-gray-500 text-right mt-4" id="receiptDate"></p>
+        <p class="text-sm text-gray-500 text-center mt-2">✨ 현명한 구독 생활을 응원합니다! ✨</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('dutchPayForm');
+        const receiptDiv = document.getElementById('receipt');
+
+        // Input fields
+        const serviceNameInput = document.getElementById('serviceName');
+        const totalFeeInput = document.getElementById('totalFee');
+        const totalMembersInput = document.getElementById('totalMembers');
+        const myShareCountInput = document.getElementById('myShareCount');
+
+        // Receipt output elements
+        const receiptServiceName = document.getElementById('receiptServiceName');
+        const receiptTotalFee = document.getElementById('receiptTotalFee');
+        const receiptTotalMembers = document.getElementById('receiptTotalMembers');
+        const receiptMyShareCount = document.getElementById('receiptMyShareCount');
+        const receiptPerPersonAmount = document.getElementById('receiptPerPersonAmount');
+        const receiptMyAmount = document.getElementById('receiptMyAmount');
+        const receiptDate = document.getElementById('receiptDate');
+
+        // Utility function to format numbers with commas for Korean Won
+        const formatNumber = (num) => {
+            return new Intl.NumberFormat('ko-KR').format(num);
+        };
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // 기본 폼 제출 동작 방지
+
+            // 입력 값 가져오기 및 파싱
+            const serviceName = serviceNameInput.value.trim();
+            const totalFee = parseInt(totalFeeInput.value, 10);
+            const totalMembers = parseInt(totalMembersInput.value, 10);
+            const myShareCount = parseInt(myShareCountInput.value, 10);
+
+            // --- 입력 값 유효성 검사 ---
+            let isValid = true;
+            let errorMessage = '';
+
+            if (!serviceName) {
+                errorMessage += 'OTT 서비스명을 입력해주세요.\n';
+                isValid = false;
+            }
+            if (isNaN(totalFee) || totalFee <= 0) {
+                errorMessage += '총 구독료는 1원 이상으로 정확히 입력해주세요.\n';
+                isValid = false;
+            }
+            if (isNaN(totalMembers) || totalMembers <= 0) {
+                errorMessage += '전체 파티원 수는 1명 이상으로 정확히 입력해주세요.\n';
+                isValid = false;
+            }
+            if (isNaN(myShareCount) || myShareCount <= 0) {
+                errorMessage += '나의 지분은 1개 이상으로 정확히 입력해주세요.\n';
+                isValid = false;
+            }
+            if (myShareCount > totalMembers) {
+                errorMessage += '나의 지분은 전체 파티원 수를 초과할 수 없습니다.\n';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                alert('입력 오류:\n' + errorMessage);
+                receiptDiv.classList.add('hidden'); // 오류 발생 시 영수증 숨김
+                return; // 유효성 검사 실패 시 실행 중단
+            }
+
+            // --- 정산 로직 ---
+            const perPersonAmount = totalFee / totalMembers;
+            const myAmount = perPersonAmount * myShareCount;
+
+            // --- 영수증에 결과 표시 ---
+            receiptServiceName.textContent = serviceName;
+            receiptTotalFee.textContent = formatNumber(totalFee);
+            receiptTotalMembers.textContent = formatNumber(totalMembers);
+            receiptMyShareCount.textContent = formatNumber(myShareCount);
+
+            // 한국 원화는 소수점이 없으므로 반올림 처리
+            receiptPerPersonAmount.textContent = formatNumber(Math.round(perPersonAmount));
+            receiptMyAmount.textContent = formatNumber(Math.round(myAmount));
+
+            // 현재 날짜 및 시간 설정
+            const now = new Date();
+            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            receiptDate.textContent = `정산일시: ${now.toLocaleDateString('ko-KR', dateOptions)}`;
+
+            receiptDiv.classList.remove('hidden'); // 영수증 표시
+        });
+    });
+</script>
     </div>
 
     <!-- Share & Ads -->
