@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="ko">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,428 +58,438 @@
     ]
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); min-height: 100vh; font-family: 'Pretendard', sans-serif; }
-        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 20px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); border: 1px solid rgba(255, 255, 255, 0.18); }
-        .receipt { background: #fff; padding: 20px; border-radius: 10px; border: 1px dashed #ccc; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    <style>
+        body { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); min-height: 100vh; font-family: 'Pretendard', sans-serif; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 20px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); border: 1px solid rgba(255, 255, 255, 0.18); }
+        .receipt { background: #fff; padding: 20px; border-radius: 10px; border: 1px dashed #ccc; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     </style>
-</head>
-<body class="flex flex-col items-center justify-center p-4">
-    <div class="glass-card w-full max-w-md p-8 mb-6">
-        <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-2">OTT 구독료 더치페이 정산기</h1>
-        <p class="text-center text-gray-600 mb-8">넷플릭스, 티빙 파티원들의 1인당 더치페이 금액을 자동 정산합니다.</p>
-        
-        <!-- LOGIC START -->
-        <!-- 스타일 및 애니메이션 정의 (Tailwind만으로 부족한 영수증 감성 디테일 추가) -->
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
-  
-  .font-sans-kr {
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-  .font-mono-code {
-    font-family: 'Fira Code', monospace;
-  }
-  
-  /* 영수증 디테일 스타일링 */
-  .receipt {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .receipt::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background-image: linear-gradient(135deg, #3b82f6 25%, transparent 25%), linear-gradient(225deg, #3b82f6 25%, transparent 25%);
-    background-size: 12px 24px;
-    background-position: 0 0;
-  }
-
-  .receipt-edge {
-    height: 8px;
-    background-image: linear-gradient(-45deg, transparent 16px, #ffffff 0), linear-gradient(45deg, transparent 16px, #ffffff 0);
-    background-size: 12px 32px;
-    background-position: left bottom;
-  }
-
-  /* 폼 요소 포커스 효과 */
-  .input-focus-effect:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-  }
-
-  /* 커스텀 라디오 버튼 스타일 */
-  .ott-card-input:checked + .ott-card {
-    border-color: #3b82f6;
-    background-color: #eff6ff;
-    transform: translateY(-2px);
-  }
-  
-  .ott-card {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-</style>
-
-<div class="font-sans-kr max-w-lg mx-auto my-8 p-1">
-  <!-- 메인 카드 컨테이너 -->
-  <div class="bg-slate-50 rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-2xl">
-    
-    <!-- 타이틀 영역 -->
-    <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-blue-100 text-blue-600 text-xs font-bold tracking-wide uppercase mb-3">
-        💡 OTT Subscription Calculator
-      </div>
-      <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">OTT 구독료 정산기</h1>
-      <p class="text-slate-500 text-xs sm:text-sm mt-2">넷플릭스, 티빙, 디즈니+ 등 파티원들과 깔끔하게 N분의 1 정산</p>
-    </div>
-
-    <!-- 계산 입력 폼 -->
-    <div class="space-y-6">
-      
-      <!-- 1. OTT 플랫폼 선택 (비주얼 카드 방식) -->
-      <div>
-        <label class="block text-sm font-bold text-slate-700 mb-3">1. OTT 플랫폼 선택</label>
-        <div class="grid grid-cols-2 gap-3">
-          
-          <!-- 넷플릭스 -->
-          <label class="cursor-pointer">
-            <input type="radio" name="ott_platform" value="netflix" class="hidden ott-card-input" checked onchange="handlePlatformChange(this)">
-            <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
-              <span class="text-red-600 font-black text-lg tracking-tighter">NETFLIX</span>
-              <span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 17,000원</span>
-            </div>
-          </label>
-
-          <!-- 티빙 -->
-          <label class="cursor-pointer">
-            <input type="radio" name="ott_platform" value="tving" class="hidden ott-card-input" onchange="handlePlatformChange(this)">
-            <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
-              <span class="text-red-500 font-black text-lg tracking-tight">TVING</span>
-              <span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 17,000원</span>
-            </div>
-          </label>
-
-          <!-- 디즈니+ -->
-          <label class="cursor-pointer">
-            <input type="radio" name="ott_platform" value="disney" class="hidden ott-card-input" onchange="handlePlatformChange(this)">
-            <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
-              <span class="text-indigo-900 font-black text-lg tracking-tight">Disney+</span>
-              <span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 13,900원</span>
-            </div>
-          </label>
-
-          <!-- 직접 입력 -->
-          <label class="cursor-pointer">
-            <input type="radio" name="ott_platform" value="custom" class="hidden ott-card-input" onchange="handlePlatformChange(this)">
-            <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
-              <span class="text-slate-600 font-bold text-lg">직접 입력</span>
-              <span class="text-xs text-slate-400 mt-1 font-medium">금액 직접 설정</span>
-            </div>
-          </label>
-
-        </div>
-      </div>
-
-      <!-- 2. 금액 및 인원수 입력 -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label for="subscription_fee" class="block text-sm font-bold text-slate-700 mb-2">월 구독 금액 (원)</label>
-          <div class="relative">
-            <input type="number" id="subscription_fee" value="17000" class="input-focus-effect w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 font-semibold text-right pr-8" placeholder="0">
-            <span class="absolute right-3 top-3.5 text-slate-400 text-sm font-medium">원</span>
-          </div>
-        </div>
-
-        <div>
-          <label for="party_members" class="block text-sm font-bold text-slate-700 mb-2">총 파티 인원 (명)</label>
-          <div class="relative">
-            <input type="number" id="party_members" value="4" min="1" class="input-focus-effect w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 font-semibold text-right pr-8" placeholder="4">
-            <span class="absolute right-3 top-3.5 text-slate-400 text-sm font-medium">명</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3. 상세 옵션 (절사 기준 / 정산 정보) -->
-      <div class="bg-white p-4 rounded-xl border border-slate-100 space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">단위 정렬 (절사)</label>
-          <div class="grid grid-cols-3 gap-2">
-            <label class="inline-flex items-center justify-center p-2 border border-slate-200 rounded-lg text-xs cursor-pointer select-none peer-checked:bg-blue-50 peer-checked:border-blue-500">
-              <input type="radio" name="rounding" value="1" class="mr-1.5" checked> 원단위 정산
-            </label>
-            <label class="inline-flex items-center justify-center p-2 border border-slate-200 rounded-lg text-xs cursor-pointer select-none">
-              <input type="radio" name="rounding" value="10" class="mr-1.5"> 10원 단위 절사
-            </label>
-            <label class="inline-flex items-center justify-center p-2 border border-slate-200 rounded-lg text-xs cursor-pointer select-none">
-              <input type="radio" name="rounding" value="100" class="mr-1.5"> 100원 단위 절사
-            </label>
-          </div>
-        </div>
-
-        <div class="border-t border-slate-100 pt-3">
-          <label for="bank_info" class="block text-sm font-bold text-slate-700 mb-1.5">송금받을 계좌 정보 (선택)</label>
-          <input type="text" id="bank_info" class="input-focus-effect w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400" placeholder="예: 카카오뱅크 3333-xx-xxxx (예금주: 홍길동)">
-        </div>
-      </div>
-
-      <!-- 계산하기 버튼 -->
-      <button onclick="calculateDutchPay()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold rounded-xl shadow-lg transition-transform active:scale-[0.98] duration-150 flex items-center justify-center space-x-2 text-base">
-        <span>🧾 상세 영수증 발행하기</span>
-      </button>
-
-    </div>
-
-    <!-- 결과 영역 (정산 영수증) -->
-    <div id="receipt_section" class="hidden">
-      <div class="receipt mt-8">
-        <!-- 영수증 헤더 -->
-        <div class="text-center pt-2 pb-4 border-b border-dashed border-slate-200">
-          <h2 class="text-xl font-black text-slate-800 tracking-wider">MEMBERSHIP RECEIPT</h2>
-          <p class="text-[10px] font-mono-code text-slate-400 mt-1" id="receipt_date">202X-XX-XX 00:00:00</p>
-        </div>
-
-        <!-- 영수증 바디 -->
-        <div class="py-4 space-y-3.5 text-sm text-slate-600 font-mono-code">
-          
-          <div class="flex justify-between">
-            <span class="text-slate-400">PLATFORM</span>
-            <span class="font-bold text-slate-800" id="receipt_platform">-</span>
-          </div>
-          
-          <div class="flex justify-between">
-            <span class="text-slate-400">TOTAL PRICE</span>
-            <span class="font-bold text-slate-800" id="receipt_total_price">0 KRW</span>
-          </div>
-
-          <div class="flex justify-between">
-            <span class="text-slate-400">PARTY MEMBERS</span>
-            <span class="font-bold text-slate-800" id="receipt_members">0명</span>
-          </div>
-
-          <div class="border-b border-dotted border-slate-200 my-2"></div>
-
-          <!-- 1인당 최종 정산금액 대강조 -->
-          <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100/50 text-center my-3">
-            <p class="text-xs text-blue-600 font-sans-kr font-bold tracking-tight">1인당 매월 고정 송금액</p>
-            <p class="text-3xl font-black text-blue-600 mt-1 font-sans-kr" id="receipt_per_person">0원</p>
-            <p class="text-[10px] text-slate-400 mt-1" id="receipt_rounding_info">(원단위 절사 적용)</p>
-          </div>
-
-          <div class="border-b border-dotted border-slate-200 my-2"></div>
-
-          <!-- 송금 정보 -->
-          <div class="space-y-1.5 text-xs font-sans-kr">
-            <div class="flex justify-between items-start">
-              <span class="text-slate-400 font-medium shrink-0">송금 계좌:</span>
-              <span class="font-bold text-slate-700 text-right break-all ml-4" id="receipt_bank">등록된 계좌 없음</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-slate-400 font-medium">정산 주기:</span>
-              <span class="font-bold text-slate-700">매월 결제일 기준</span>
-            </div>
-          </div>
-
-          <!-- 바코드 비주얼 시뮬레이션 -->
-          <div class="pt-4 flex flex-col items-center space-y-1">
-            <div class="w-full h-8 bg-slate-900" style="background: repeating-linear-gradient(90deg, #1e293b, #1e293b 2px, transparent 2px, transparent 6px, #1e293b 6px, #1e293b 7px, transparent 7px, transparent 9px);"></div>
-            <span class="text-[10px] text-slate-400 tracking-widest font-mono-code" id="receipt_barcode">#OTT-DUTCH-948271</span>
-          </div>
-
-        </div>
-
-        <!-- 영수증 하단 톱니 데코레이션 -->
-        <div class="receipt-edge absolute bottom-0 left-0 right-0"></div>
-      </div>
-
-      <!-- 정산 결과 공유하기 버튼 세트 -->
-      <div class="mt-4 grid grid-cols-1 gap-2">
-        <button onclick="copyShareText()" class="w-full py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-sm transition duration-150 flex items-center justify-center space-x-2 shadow-md">
-          <span>📋 카카오톡 정산 문구 복사하기</span>
-        </button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- 기능 컨트롤러 스크립트 -->
-<script>
-  // 플랫폼별 기본 요금 데이터 정의
-  const platformPrices = {
-    netflix: 17000,
-    tving: 17000,
-    disney: 13900,
-    custom: 0
-  };
-
-  // 플랫폼 라디오 버튼 변경 처리
-  function handlePlatformChange(radio) {
-    const feeInput = document.getElementById('subscription_fee');
-    const selectedPlatform = radio.value;
-    
-    if (selectedPlatform !== 'custom') {
-      feeInput.value = platformPrices[selectedPlatform];
-      feeInput.readOnly = true;
-      feeInput.classList.add('bg-slate-100');
-    } else {
-      feeInput.value = '';
-      feeInput.readOnly = false;
-      feeInput.classList.remove('bg-slate-100');
-      feeInput.focus();
-    }
-  }
-
-  // 초기 로드 시 셋업
-  document.addEventListener("DOMContentLoaded", () => {
-    const checkedPlatform = document.querySelector('input[name="ott_platform"]:checked');
-    if (checkedPlatform) {
-      handlePlatformChange(checkedPlatform);
-    }
-  });
-
-  // 전역 결과값 저장을 위한 변수
-  let lastCalculation = {
-    platformName: '',
-    totalFee: 0,
-    members: 0,
-    perPerson: 0,
-    bankInfo: ''
-  };
-
-  // 정산 계산 코어 로직
-  function calculateDutchPay() {
-    const platformInput = document.querySelector('input[name="ott_platform"]:checked');
-    const feeInput = document.getElementById('subscription_fee');
-    const membersInput = document.getElementById('party_members');
-    const roundingInput = document.querySelector('input[name="rounding"]:checked');
-    const bankInput = document.getElementById('bank_info');
-
-    const totalFee = parseInt(feeInput.value) || 0;
-    const members = parseInt(membersInput.value) || 1;
-    const roundUnit = parseInt(roundingInput.value) || 1;
-
-    if (totalFee <= 0) {
-      alert('올바른 구독 요금을 입력해 주세요.');
-      feeInput.focus();
-      return;
-    }
-
-    if (members <= 0) {
-      alert('정산 인원은 최소 1명 이상이어야 합니다.');
-      membersInput.focus();
-      return;
-    }
-
-    // 1인당 분담금 기본 계산
-    let perPerson = totalFee / members;
-
-    // 절사(버림) 로직 적용
-    if (roundUnit > 1) {
-      perPerson = Math.floor(perPerson / roundUnit) * roundUnit;
-    } else {
-      perPerson = Math.floor(perPerson); // 기본 소수점 버림
-    }
-
-    // 플랫폼 명칭 한글 매핑
-    const platformNames = {
-      netflix: '넷플릭스 (Netflix)',
-      tving: '티빙 (Tving)',
-      disney: '디즈니 플러스 (Disney+)',
-      custom: '개별 지정 서비스'
-    };
-    const platformText = platformNames[platformInput.value];
-
-    // 현재 시간 계산
-    const now = new Date();
-    const dateString = now.getFullYear() + '-' + 
-                       String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-                       String(now.getDate()).padStart(2, '0') + ' ' + 
-                       String(now.getHours()).padStart(2, '0') + ':' + 
-                       String(now.getMinutes()).padStart(2, '0') + ':' + 
-                       String(now.getSeconds()).padStart(2, '0');
-
-    // 은행 정보 바인딩
-    const bankText = bankInput.value.trim() || '미지정 (호스트에게 직접 확인하세요)';
-
-    // 랜덤 바코드 일련번호 생성
-    const barcodeId = '#OTT-' + Math.floor(100000 + Math.random() * 900000);
-
-    // 영수증에 데이터 렌더링
-    document.getElementById('receipt_date').innerText = dateString;
-    document.getElementById('receipt_platform').innerText = platformText;
-    document.getElementById('receipt_total_price').innerText = totalFee.toLocaleString() + ' KRW';
-    document.getElementById('receipt_members').innerText = members + '명';
-    document.getElementById('receipt_per_person').innerText = perPerson.toLocaleString() + '원';
-    document.getElementById('receipt_bank').innerText = bankText;
-    document.getElementById('receipt_barcode').innerText = barcodeId;
-
-    // 절사 정보 텍스트 표기
-    const roundingInfoText = roundUnit > 1 ? `(${roundUnit}원 단위 이하 절사 적용)` : '(원단위 미만 절사 적용)';
-    document.getElementById('receipt_rounding_info').innerText = roundingInfoText;
-
-    // 전역 상태 업데이트
-    lastCalculation = {
-      platformName: platformText,
-      totalFee: totalFee,
-      members: members,
-      perPerson: perPerson,
-      bankInfo: bankText
-    };
-
-    // 영수증 영역 부드럽게 노출
-    const receiptSection = document.getElementById('receipt_section');
-    receiptSection.classList.remove('hidden');
-    receiptSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  // 클립보드 공유 문구 복사 기능
-  function copyShareText() {
-    if (lastCalculation.totalFee === 0) return;
-
-    const shareMessage = `🔔 [OTT 구독료 정산 안내] 🔔
-
-우리가 함께 구독하는 서비스의 정산 요청 요약입니다!
-
-■ 이용 서비스: ${lastCalculation.platformName}
-■ 전체 구독료: ${lastCalculation.totalFee.toLocaleString()}원 (총 ${lastCalculation.members}명)
-■ 1인당 송금액: 매월 ${lastCalculation.perPerson.toLocaleString()}원
-
-🏦 송금받을 계좌:
-${lastCalculation.bankInfo}
-
-늦지 않게 송금 부탁드려요! 감사합니다. 🍿`;
-
-    navigator.clipboard.writeText(shareMessage).then(() => {
-      alert('정산 문구가 클립보드에 복사되었습니다. 카카오톡 등 SNS에 바로 붙여넣기(Ctrl+V) 하세요!');
-    }).catch(err => {
-      alert('텍스트 복사에 실패했습니다. 수동으로 복사해 주세요.');
-    });
-  }
-</script>
-        <!-- LOGIC END -->
-        
-    </div>
-    
-    <!-- Google AdSense -->
-    <div class="w-full max-w-md bg-white/50 rounded-lg p-2 text-center text-xs text-gray-500 mb-6">
-        <span>광고</span>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2228289204702106" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
-    </div>
-    
-    <!-- Web Share API Button -->
-    <button onclick="if(navigator.share) navigator.share({title: 'OTT 구독료 더치페이 정산기', url: window.location.href})" class="w-full max-w-md bg-gray-800 text-white font-bold py-4 rounded-full shadow-lg hover:bg-gray-700 transition flex justify-center items-center gap-2">
-        공유하기
-    </button>
-</body>
+</head>
+<body class="flex flex-col items-center justify-center p-4">
+    <div class="glass-card w-full max-w-md p-8 mb-6">
+        <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-2">OTT 구독료 더치페이 정산기</h1>
+        <p class="text-center text-gray-600 mb-8">넷플릭스, 티빙 파티원들의 1인당 더치페이 금액을 자동 정산합니다.</p>
+        
+        <!-- LOGIC START -->
+        <!-- 스타일 및 애니메이션 정의 (Tailwind만으로 부족한 영수증 감성 디테일 추가) -->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+  
+  .font-sans-kr {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .font-mono-code {
+    font-family: 'Fira Code', monospace;
+  }
+  
+  /* 영수증 디테일 스타일링 */
+  .receipt {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .receipt::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background-image: linear-gradient(135deg, #3b82f6 25%, transparent 25%), linear-gradient(225deg, #3b82f6 25%, transparent 25%);
+    background-size: 12px 24px;
+    background-position: 0 0;
+  }
+
+  .receipt-edge {
+    height: 8px;
+    background-image: linear-gradient(-45deg, transparent 16px, #ffffff 0), linear-gradient(45deg, transparent 16px, #ffffff 0);
+    background-size: 12px 32px;
+    background-position: left bottom;
+  }
+
+  /* 폼 요소 포커스 효과 */
+  .input-focus-effect:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+  }
+
+  /* 커스텀 라디오 버튼 스타일 */
+  .ott-card-input:checked + .ott-card {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+    transform: translateY(-2px);
+  }
+  
+  .ott-card {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>
+
+<div class="font-sans-kr max-w-lg mx-auto my-8 p-1">
+  <!-- 메인 카드 컨테이너 -->
+  <div class="bg-slate-50 rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-2xl">
+    
+    <!-- 타이틀 영역 -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center px-3 py-1 rounded-full bg-blue-100 text-blue-600 text-xs font-bold tracking-wide uppercase mb-3">
+        💡 OTT Subscription Calculator
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">OTT 구독료 정산기</h1>
+      <p class="text-slate-500 text-xs sm:text-sm mt-2">넷플릭스, 티빙, 디즈니+ 등 파티원들과 깔끔하게 N분의 1 정산</p>
+    </div>
+
+    <!-- 계산 입력 폼 -->
+    <div class="space-y-6">
+      
+      <!-- 1. OTT 플랫폼 선택 (비주얼 카드 방식) -->
+      <div>
+        <label class="block text-sm font-bold text-slate-700 mb-3">1. OTT 플랫폼 선택</label>
+        <div class="grid grid-cols-2 gap-3">
+          
+          <!-- 넷플릭스 -->
+          <label class="cursor-pointer">
+            <input type="radio" name="ott_platform" value="netflix" class="hidden ott-card-input" checked onchange="handlePlatformChange(this)">
+            <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
+              <span class="text-red-600 font-black text-lg tracking-tighter">NETFLIX</span>
+              <span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 17,000원</span>
+            </div>
+          </label>
+
+          <!-- 티빙 -->
+          <label class="cursor-pointer">
+            <input type="radio" name="ott_platform" value="tving" class="hidden ott-card-input" onchange="handlePlatformChange(this)">
+            <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
+              <span class="text-red-500 font-black text-lg tracking-tight">TVING</span>
+              <span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 17,000원</span>
+            </div>
+          </label>
+
+          <!-- 디즈니+ -->
+          <label class="cursor-pointer">
+            <input type="radio" name="ott_platform" value="disney" class="hidden ott-card-input" onchange="handlePlatformChange(this)">
+            <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
+              <span class="text-indigo-900 font-black text-lg tracking-tight">Disney+</span>
+              <span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 13,900원</span>
+            </div>
+          </label>
+
+          <!-- 직접 입력 -->
+          <label class="cursor-pointer">
+            <input type="radio" name="ott_platform" value="custom" class="hidden ott-card-input" onchange="handlePlatformChange(this)">
+            <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
+              <span class="text-slate-600 font-bold text-lg">직접 입력</span>
+              <span class="text-xs text-slate-400 mt-1 font-medium">금액 직접 설정</span>
+            </div>
+          </label>
+
+        </div>
+      </div>
+
+      <!-- 2. 금액 및 인원수 입력 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="subscription_fee" class="block text-sm font-bold text-slate-700 mb-2">월 구독 금액 (원)</label>
+          <div class="relative">
+            <input type="number" id="subscription_fee" value="17000" class="input-focus-effect w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 font-semibold text-right pr-8" placeholder="0">
+            <span class="absolute right-3 top-3.5 text-slate-400 text-sm font-medium">원</span>
+          </div>
+        </div>
+
+        <div>
+          <label for="party_members" class="block text-sm font-bold text-slate-700 mb-2">총 파티 인원 (명)</label>
+          <div class="relative">
+            <input type="number" id="party_members" value="4" min="1" class="input-focus-effect w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-800 font-semibold text-right pr-8" placeholder="4">
+            <span class="absolute right-3 top-3.5 text-slate-400 text-sm font-medium">명</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 상세 옵션 (절사 기준 / 정산 정보) -->
+      <div class="bg-white p-4 rounded-xl border border-slate-100 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">단위 정렬 (절사)</label>
+          <div class="grid grid-cols-3 gap-2">
+            <label class="inline-flex items-center justify-center p-2 border border-slate-200 rounded-lg text-xs cursor-pointer select-none peer-checked:bg-blue-50 peer-checked:border-blue-500">
+              <input type="radio" name="rounding" value="1" class="mr-1.5" checked> 원단위 정산
+            </label>
+            <label class="inline-flex items-center justify-center p-2 border border-slate-200 rounded-lg text-xs cursor-pointer select-none">
+              <input type="radio" name="rounding" value="10" class="mr-1.5"> 10원 단위 절사
+            </label>
+            <label class="inline-flex items-center justify-center p-2 border border-slate-200 rounded-lg text-xs cursor-pointer select-none">
+              <input type="radio" name="rounding" value="100" class="mr-1.5"> 100원 단위 절사
+            </label>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-100 pt-3">
+          <label for="bank_info" class="block text-sm font-bold text-slate-700 mb-1.5">송금받을 계좌 정보 (선택)</label>
+          <input type="text" id="bank_info" class="input-focus-effect w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400" placeholder="예: 카카오뱅크 3333-xx-xxxx (예금주: 홍길동)">
+        </div>
+      </div>
+
+      <!-- 계산하기 버튼 -->
+      <button onclick="calculateDutchPay()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold rounded-xl shadow-lg transition-transform active:scale-[0.98] duration-150 flex items-center justify-center space-x-2 text-base">
+        <span>🧾 상세 영수증 발행하기</span>
+      </button>
+
+    </div>
+
+    <!-- 결과 영역 (정산 영수증) -->
+    <div id="receipt_section" class="hidden">
+      <div class="receipt mt-8">
+        <!-- 영수증 헤더 -->
+        <div class="text-center pt-2 pb-4 border-b border-dashed border-slate-200">
+          <h2 class="text-xl font-black text-slate-800 tracking-wider">MEMBERSHIP RECEIPT</h2>
+          <p class="text-[10px] font-mono-code text-slate-400 mt-1" id="receipt_date">202X-XX-XX 00:00:00</p>
+        </div>
+
+        <!-- 영수증 바디 -->
+        <div class="py-4 space-y-3.5 text-sm text-slate-600 font-mono-code">
+          
+          <div class="flex justify-between">
+            <span class="text-slate-400">PLATFORM</span>
+            <span class="font-bold text-slate-800" id="receipt_platform">-</span>
+          </div>
+          
+          <div class="flex justify-between">
+            <span class="text-slate-400">TOTAL PRICE</span>
+            <span class="font-bold text-slate-800" id="receipt_total_price">0 KRW</span>
+          </div>
+
+          <div class="flex justify-between">
+            <span class="text-slate-400">PARTY MEMBERS</span>
+            <span class="font-bold text-slate-800" id="receipt_members">0명</span>
+          </div>
+
+          <div class="border-b border-dotted border-slate-200 my-2"></div>
+
+          <!-- 1인당 최종 정산금액 대강조 -->
+          <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100/50 text-center my-3">
+            <p class="text-xs text-blue-600 font-sans-kr font-bold tracking-tight">1인당 매월 고정 송금액</p>
+            <p class="text-3xl font-black text-blue-600 mt-1 font-sans-kr" id="receipt_per_person">0원</p>
+            <p class="text-[10px] text-slate-400 mt-1" id="receipt_rounding_info">(원단위 절사 적용)</p>
+          </div>
+
+          <div class="border-b border-dotted border-slate-200 my-2"></div>
+
+          <!-- 송금 정보 -->
+          <div class="space-y-1.5 text-xs font-sans-kr">
+            <div class="flex justify-between items-start">
+              <span class="text-slate-400 font-medium shrink-0">송금 계좌:</span>
+              <span class="font-bold text-slate-700 text-right break-all ml-4" id="receipt_bank">등록된 계좌 없음</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400 font-medium">정산 주기:</span>
+              <span class="font-bold text-slate-700">매월 결제일 기준</span>
+            </div>
+          </div>
+
+          <!-- 바코드 비주얼 시뮬레이션 -->
+          <div class="pt-4 flex flex-col items-center space-y-1">
+            <div class="w-full h-8 bg-slate-900" style="background: repeating-linear-gradient(90deg, #1e293b, #1e293b 2px, transparent 2px, transparent 6px, #1e293b 6px, #1e293b 7px, transparent 7px, transparent 9px);"></div>
+            <span class="text-[10px] text-slate-400 tracking-widest font-mono-code" id="receipt_barcode">#OTT-DUTCH-948271</span>
+          </div>
+
+        </div>
+
+        <!-- 영수증 하단 톱니 데코레이션 -->
+        <div class="receipt-edge absolute bottom-0 left-0 right-0"></div>
+      </div>
+
+      <!-- 정산 결과 공유하기 버튼 세트 -->
+      <div class="mt-4 grid grid-cols-1 gap-2">
+        <button onclick="copyShareText()" class="w-full py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-sm transition duration-150 flex items-center justify-center space-x-2 shadow-md">
+          <span>📋 카카오톡 정산 문구 복사하기</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 기능 컨트롤러 스크립트 -->
+<script>
+  // 플랫폼별 기본 요금 데이터 정의
+  const platformPrices = {
+    netflix: 17000,
+    tving: 17000,
+    disney: 13900,
+    custom: 0
+  };
+
+  // 플랫폼 라디오 버튼 변경 처리
+  function handlePlatformChange(radio) {
+    const feeInput = document.getElementById('subscription_fee');
+    const selectedPlatform = radio.value;
+    
+    if (selectedPlatform !== 'custom') {
+      feeInput.value = platformPrices[selectedPlatform];
+      feeInput.readOnly = true;
+      feeInput.classList.add('bg-slate-100');
+    } else {
+      feeInput.value = '';
+      feeInput.readOnly = false;
+      feeInput.classList.remove('bg-slate-100');
+      feeInput.focus();
+    }
+  }
+
+  // 초기 로드 시 셋업
+  document.addEventListener("DOMContentLoaded", () => {
+    const checkedPlatform = document.querySelector('input[name="ott_platform"]:checked');
+    if (checkedPlatform) {
+      handlePlatformChange(checkedPlatform);
+    }
+  });
+
+  // 전역 결과값 저장을 위한 변수
+  let lastCalculation = {
+    platformName: '',
+    totalFee: 0,
+    members: 0,
+    perPerson: 0,
+    bankInfo: ''
+  };
+
+  // 정산 계산 코어 로직
+  function calculateDutchPay() {
+    const platformInput = document.querySelector('input[name="ott_platform"]:checked');
+    const feeInput = document.getElementById('subscription_fee');
+    const membersInput = document.getElementById('party_members');
+    const roundingInput = document.querySelector('input[name="rounding"]:checked');
+    const bankInput = document.getElementById('bank_info');
+
+    const totalFee = parseInt(feeInput.value) || 0;
+    const members = parseInt(membersInput.value) || 1;
+    const roundUnit = parseInt(roundingInput.value) || 1;
+
+    if (totalFee <= 0) {
+      alert('올바른 구독 요금을 입력해 주세요.');
+      feeInput.focus();
+      return;
+    }
+
+    if (members <= 0) {
+      alert('정산 인원은 최소 1명 이상이어야 합니다.');
+      membersInput.focus();
+      return;
+    }
+
+    // 1인당 분담금 기본 계산
+    let perPerson = totalFee / members;
+
+    // 절사(버림) 로직 적용
+    if (roundUnit > 1) {
+      perPerson = Math.floor(perPerson / roundUnit) * roundUnit;
+    } else {
+      perPerson = Math.floor(perPerson); // 기본 소수점 버림
+    }
+
+    // 플랫폼 명칭 한글 매핑
+    const platformNames = {
+      netflix: '넷플릭스 (Netflix)',
+      tving: '티빙 (Tving)',
+      disney: '디즈니 플러스 (Disney+)',
+      custom: '개별 지정 서비스'
+    };
+    const platformText = platformNames[platformInput.value];
+
+    // 현재 시간 계산
+    const now = new Date();
+    const dateString = now.getFullYear() + '-' + 
+                       String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                       String(now.getDate()).padStart(2, '0') + ' ' + 
+                       String(now.getHours()).padStart(2, '0') + ':' + 
+                       String(now.getMinutes()).padStart(2, '0') + ':' + 
+                       String(now.getSeconds()).padStart(2, '0');
+
+    // 은행 정보 바인딩
+    const bankText = bankInput.value.trim() || '미지정 (호스트에게 직접 확인하세요)';
+
+    // 랜덤 바코드 일련번호 생성
+    const barcodeId = '#OTT-' + Math.floor(100000 + Math.random() * 900000);
+
+    // 영수증에 데이터 렌더링
+    document.getElementById('receipt_date').innerText = dateString;
+    document.getElementById('receipt_platform').innerText = platformText;
+    document.getElementById('receipt_total_price').innerText = totalFee.toLocaleString() + ' KRW';
+    document.getElementById('receipt_members').innerText = members + '명';
+    document.getElementById('receipt_per_person').innerText = perPerson.toLocaleString() + '원';
+    document.getElementById('receipt_bank').innerText = bankText;
+    document.getElementById('receipt_barcode').innerText = barcodeId;
+
+    // 절사 정보 텍스트 표기
+    const roundingInfoText = roundUnit > 1 ? `(${roundUnit}원 단위 이하 절사 적용)` : '(원단위 미만 절사 적용)';
+    document.getElementById('receipt_rounding_info').innerText = roundingInfoText;
+
+    // 전역 상태 업데이트
+    lastCalculation = {
+      platformName: platformText,
+      totalFee: totalFee,
+      members: members,
+      perPerson: perPerson,
+      bankInfo: bankText
+    };
+
+    // 영수증 영역 부드럽게 노출
+    const receiptSection = document.getElementById('receipt_section');
+    receiptSection.classList.remove('hidden');
+    receiptSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // 클립보드 공유 문구 복사 기능
+  function copyShareText() {
+    if (lastCalculation.totalFee === 0) return;
+
+    const shareMessage = `🔔 [OTT 구독료 정산 안내] 🔔
+
+우리가 함께 구독하는 서비스의 정산 요청 요약입니다!
+
+■ 이용 서비스: ${lastCalculation.platformName}
+■ 전체 구독료: ${lastCalculation.totalFee.toLocaleString()}원 (총 ${lastCalculation.members}명)
+■ 1인당 송금액: 매월 ${lastCalculation.perPerson.toLocaleString()}원
+
+🏦 송금받을 계좌:
+${lastCalculation.bankInfo}
+
+늦지 않게 송금 부탁드려요! 감사합니다. 🍿`;
+
+    navigator.clipboard.writeText(shareMessage).then(() => {
+      alert('정산 문구가 클립보드에 복사되었습니다. 카카오톡 등 SNS에 바로 붙여넣기(Ctrl+V) 하세요!');
+    }).catch(err => {
+      alert('텍스트 복사에 실패했습니다. 수동으로 복사해 주세요.');
+    });
+  }
+</script>
+        <!-- LOGIC END -->
+        
+    </div>
+    
+    <!-- Google AdSense -->
+    <div class="w-full max-w-md bg-white/50 rounded-lg p-2 text-center text-xs text-gray-500 mb-6">
+        <span>광고</span>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2228289204702106" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({})</script>
+    </div>
+    
+    <!-- Web Share API Button -->
+    <button onclick="if(navigator.share) navigator.share({title: 'OTT 구독료 더치페이 정산기', url: window.location.href})" class="w-full max-w-md bg-gray-800 text-white font-bold py-4 rounded-full shadow-lg hover:bg-gray-700 transition flex justify-center items-center gap-2 mb-8">
+        공유하기
+    </button>
+
+    <!-- Footer -->
+    <footer class="w-full max-w-md text-center pb-8 text-sm text-gray-700/80">
+        <div class="flex justify-center items-center gap-4 mb-3">
+            <a href="terms.html" class="hover:text-gray-900 transition font-medium">이용약관</a>
+            <span class="text-gray-400 text-xs">|</span>
+            <a href="privacy.html" class="hover:text-gray-900 transition font-medium">개인정보처리방침</a>
+        </div>
+        <p class="text-xs text-gray-600">© 2026 OTT 구독료 더치페이 정산기. All rights reserved.</p>
+    </footer>
+</body>
 </html>
