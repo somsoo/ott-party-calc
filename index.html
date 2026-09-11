@@ -65,6 +65,20 @@
     </style>
 </head>
 <body class="flex flex-col items-center justify-center p-4">
+    <!-- 상단 슬림 띠배너 (헤더 직하단: 50~90px 반응형) -->
+    <div class="manual-ad-box ad-top-banner" style="width: 100%; max-width: 960px; margin: 12px auto 20px; overflow: hidden; text-align: center; min-height: 50px; max-height: 90px;">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:100%;height:60px;"
+             data-ad-client="ca-pub-2228289204702106"
+             data-ad-slot="3824727725"
+             data-ad-format="horizontal"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
     <div class="glass-card w-full max-w-md p-8 mb-6">
         <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-2">OTT 구독료 더치페이 정산기</h1>
         <p class="text-center text-gray-600 mb-8">넷플릭스, 티빙 파티원들의 1인당 더치페이 금액을 자동 정산합니다.</p>
@@ -482,7 +496,21 @@ ${lastCalculation.bankInfo}
     </button>
 
     <!-- Footer -->
-    <footer class="w-full max-w-md text-center pb-8 text-sm text-gray-700/80">
+        <!-- 중간 반응형 배너 (In-Result Slot) -->
+    <div class="manual-ad-box ad-mid-banner" style="width: 100%; max-width: 960px; margin: 24px auto; overflow: hidden; text-align: center;">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2228289204702106"
+             data-ad-slot="3824727725"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+<footer class="w-full max-w-md text-center pb-8 text-sm text-gray-700/80">
         <div class="flex justify-center items-center gap-4 mb-3">
             <a href="terms.html" class="hover:text-gray-900 transition font-medium">이용약관</a>
             <span class="text-gray-400 text-xs">|</span>
@@ -490,5 +518,29 @@ ${lastCalculation.bankInfo}
         </div>
         <p class="text-xs text-gray-600">© 2026 OTT 구독료 더치페이 정산기. All rights reserved.</p>
     </footer>
+    <!-- 하단 반응형 배너 (Bottom Slot) -->
+    <div class="manual-ad-box ad-bottom-banner" style="width: 100%; max-width: 960px; margin: 30px auto 20px; overflow: hidden; text-align: center;">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2228289204702106"
+             data-ad-slot="3416334507"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+
+    <!-- E-E-A-T 서브페이지 네비게이션 링크 -->
+    <div class="max-w-4xl mx-auto px-4 py-4 mt-6 border-t border-slate-200 flex flex-wrap items-center justify-center gap-4 text-xs font-medium text-slate-500">
+        <a href="/about.html" class="hover:text-blue-600 transition">서비스 소개 &amp; 산출 공식</a>
+        <span class="text-slate-300">&middot;</span>
+        <a href="/privacy.html" class="hover:text-blue-600 transition">개인정보처리방침 (로컬 연산)</a>
+        <span class="text-slate-300">&middot;</span>
+        <a href="/sitemap.xml" class="hover:text-blue-600 transition">사이트맵</a>
+    </div>
+
 </body>
 </html>
