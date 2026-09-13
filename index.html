@@ -81,7 +81,7 @@
         </script>
     </div>
 
-    <div class="glass-card w-full max-w-md p-8 mb-6">
+    <div class="glass-card w-full max-w-5xl p-3.5 sm:p-6 mb-8">
         <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-2">OTT 구독료 더치페이 정산기</h1>
         <p class="text-center text-gray-600 mb-8">넷플릭스, 티빙 파티원들의 1인당 더치페이 금액을 자동 정산합니다.</p>
         
@@ -145,7 +145,7 @@
   }
 </style>
 
-<div class="font-sans-kr max-w-lg mx-auto my-8 p-1">
+<div class="font-sans-kr w-full mx-auto">
   <!-- 메인 카드 컨테이너 -->
   <div class="bg-slate-50 rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-2xl">
     
@@ -158,8 +158,12 @@
       <p class="text-slate-500 text-xs sm:text-sm mt-2">넷플릭스, 티빙, 디즈니+ 등 파티원들과 깔끔하게 N분의 1 정산</p>
     </div>
 
-    <!-- 계산 입력 폼 -->
-    <div class="space-y-6">
+    <!-- 2-COLUMN RESPONSIVE GRID -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+      <!-- LEFT COLUMN: INPUT FORM (6 COLS) -->
+      <div class="lg:col-span-6 space-y-5">
+        <!-- 계산 입력 폼 -->
+        <div class="space-y-5">
       
       <!-- 1. OTT 플랫폼 선택 (비주얼 카드 방식) -->
       <div>
@@ -254,8 +258,13 @@
 
     </div>
 
-    <!-- 결과 영역 (정산 영수증) -->
-    <div id="receipt_section" class="hidden">
+    </div>
+      </div>
+
+      <!-- RIGHT COLUMN: RECEIPT & SHARE (6 COLS, STICKY ON PC) -->
+      <div class="lg:col-span-6 space-y-4 lg:sticky lg:top-6">
+        <!-- 결과 영역 (정산 영수증) -->
+        <div id="receipt_section">
       <div class="receipt mt-8">
         <!-- 영수증 헤더 -->
         <div class="text-center pt-2 pb-4 border-b border-dashed border-slate-200">
@@ -324,6 +333,22 @@
       </div>
     </div>
 
+        <!-- 정산 꿀팁 박스 -->
+        <div class="p-4 bg-white/80 rounded-2xl border border-slate-200/80 shadow-sm text-xs text-slate-600 space-y-2">
+          <span class="font-bold text-slate-800 flex items-center gap-1.5 text-sm">
+            💡 OTT 계정 공유 주의사항
+          </span>
+          <p class="leading-relaxed">넷플릭스 가구 외 공유 정책 등 각 플랫폼 약관을 확인하고 안전하게 분담금을 정산하세요.</p>
+        </div>
+
+        <div class="p-4 bg-white/70 rounded-xl border border-slate-200 text-center">
+          <p class="text-xs text-slate-600 font-medium mb-2">OTT 구독료 절약 가이드북</p>
+          <a href="guides/guide1.html" class="inline-block w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg transition text-center">
+            📖 통신사 제휴 및 구독료 절감 비법 보기
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -512,7 +537,7 @@ ${lastCalculation.bankInfo}
         </script>
     </div>
 
-<footer class="w-full max-w-md text-center pb-8 text-sm text-gray-700/80">
+<footer class="w-full max-w-4xl text-center pb-8 text-sm text-gray-700/80">
         <div class="flex justify-center items-center gap-4 mb-3">
             <a href="terms.html" class="hover:text-gray-900 transition font-medium">이용약관</a>
             <span class="text-gray-400 text-xs">|</span>
