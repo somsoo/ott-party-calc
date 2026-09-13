@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -573,23 +573,28 @@ ${lastCalculation.bankInfo}
   <!-- Preemptive UX Helper: Auto comma formatting & Result sharing -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Auto comma on number/text inputs with currency hints
-      const moneyInputs = document.querySelectorAll('input[type="text"], input[type="number"], input[inputmode="numeric"]');
+      // Auto comma on number/text inputs with currency hints (Strict non-destructive mode)
+      const moneyInputs = document.querySelectorAll('input[type="text"], input[inputmode="numeric"]');
       moneyInputs.forEach(input => {
-        // Skip specific inputs like year, month, date, percent, id
-        const name = (input.name || input.id || '').toLowerCase();
-        if (name.includes('year') || name.includes('month') || name.includes('day') || name.includes('rate') || name.includes('percent') || name.includes('age') || name.includes('score')) {
+        const name = (input.name || input.id || input.placeholder || '').toLowerCase();
+        // Skip non-currency text fields: bank, account, name, title, memo, desc, url, email, etc.
+        if (name.includes('bank') || name.includes('account') || name.includes('name') || name.includes('title') || 
+            name.includes('memo') || name.includes('desc') || name.includes('url') || name.includes('email') ||
+            name.includes('year') || name.includes('month') || name.includes('day') || name.includes('rate') || 
+            name.includes('percent') || name.includes('age') || name.includes('score') || name.includes('count')) {
           return;
         }
         
-        // Listen to input
-        input.addEventListener('input', function(e) {
-          if (this.type === 'number') return; // native number handles own UI
-          let val = this.value.replace(/[^0-9]/g, '');
-          if (val) {
-            this.value = Number(val).toLocaleString('ko-KR');
-          }
-        });
+        // Only format if explicitly marked as currency or amount
+        if (name.includes('fee') || name.includes('price') || name.includes('amount') || name.includes('money') || 
+            name.includes('salary') || name.includes('cost') || input.classList.contains('auto-comma')) {
+          input.addEventListener('input', function(e) {
+            let val = this.value.replace(/[^0-9]/g, '');
+            if (val) {
+              this.value = Number(val).toLocaleString('ko-KR');
+            }
+          });
+        }
       });
 
       // Inject Global Result Copy Function if not exists
@@ -601,7 +606,7 @@ ${lastCalculation.bankInfo}
         navigator.clipboard.writeText(textToCopy + "\n\n👉 계산기 바로가기: " + window.location.href).then(() => {
           showToastNotification('계산 결과가 클립보드에 복사되었습니다!');
         }).catch(() => {
-          showToastNotification('복사되었습니다: ' + window.location.href);
+          showToastNotification('복사에 실패했습니다. 브라우저 주소를 직접 복사해주세요.');
         });
       };
 
