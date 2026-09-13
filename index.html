@@ -67,8 +67,9 @@
   <link rel="sitemap" type="application/xml" title="Sitemap" href="https://ott-party-calc.enjoy-onepage.com/sitemap.xml" />
 </head>
 <body class="flex flex-col items-center justify-center p-4">
-    <!-- 상단 슬림 띠배너 (헤더 직하단: 50~90px 반응형) -->
-    <div class="manual-ad-box ad-top-banner" style="width: 100%; max-width: 960px; margin: 12px auto 20px; overflow: hidden; text-align: center; min-height: 50px; max-height: 90px;">
+
+    <!-- 상단 슬림 띠배너 (헤더 직하단: 50~60px 슬림형) -->
+    <div class="manual-ad-box ad-top-banner" style="width: 100%; max-width: 960px; margin: 8px auto 16px; overflow: hidden; text-align: center; min-height: 50px; max-height: 60px;">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
         <ins class="adsbygoogle"
              style="display:inline-block;width:100%;height:60px;"
@@ -76,10 +77,9 @@
              data-ad-slot="3824727725"
              data-ad-format="horizontal"
              data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
+    
 
     <div class="glass-card w-full max-w-5xl p-3.5 sm:p-6 mb-8">
         <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-2">OTT 구독료 더치페이 정산기</h1>
@@ -511,11 +511,7 @@ ${lastCalculation.bankInfo}
     </div>
     
     <!-- Google AdSense -->
-    <div class="manual-ad-box" style="width: 100%; min-height: 100px; margin-top: 20px; margin-bottom: 24px; overflow: hidden; background: #fff; text-align: center; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 10px; box-sizing: border-box;">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2228289204702106" data-ad-slot="3824727725" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
+    
     
     <!-- Web Share API Button -->
     <button onclick="if(navigator.share) navigator.share({title: 'OTT 구독료 더치페이 정산기', url: window.location.href})" class="w-full max-w-md bg-gray-800 text-white font-bold py-4 rounded-full shadow-lg hover:bg-gray-700 transition flex justify-center items-center gap-2 mb-8">
@@ -524,17 +520,18 @@ ${lastCalculation.bankInfo}
 
     <!-- Footer -->
         <!-- 중간 반응형 배너 (In-Result Slot) -->
-    <div class="manual-ad-box ad-mid-banner" style="width: 100%; max-width: 960px; margin: 24px auto; overflow: hidden; text-align: center;">
+    
+
+    <!-- 본문 중간 반응형 배너 -->
+    <div class="manual-ad-box ad-mid-banner" style="width: 100%; max-width: 960px; margin: 20px auto; overflow: hidden; text-align: center;">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
         <ins class="adsbygoogle"
              style="display:block"
              data-ad-client="ca-pub-2228289204702106"
-             data-ad-slot="3824727725"
+             data-ad-slot="1186914926"
              data-ad-format="auto"
              data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
 <footer class="w-full max-w-4xl text-center pb-8 text-sm text-gray-700/80">
@@ -545,8 +542,9 @@ ${lastCalculation.bankInfo}
         </div>
         <p class="text-xs text-gray-600">© 2026 OTT 구독료 더치페이 정산기. All rights reserved.</p>
     </footer>
-    <!-- 하단 반응형 배너 (Bottom Slot) -->
-    <div class="manual-ad-box ad-bottom-banner" style="width: 100%; max-width: 960px; margin: 30px auto 20px; overflow: hidden; text-align: center;">
+
+    <!-- 하단 대형 배너 (푸터 직전) -->
+    <div class="manual-ad-box ad-bottom-banner" style="width: 100%; max-width: 960px; margin: 24px auto 16px; overflow: hidden; text-align: center;">
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2228289204702106" crossorigin="anonymous"></script>
         <ins class="adsbygoogle"
              style="display:block"
@@ -554,10 +552,9 @@ ${lastCalculation.bankInfo}
              data-ad-slot="3416334507"
              data-ad-format="auto"
              data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
+    
 
 
     <!-- E-E-A-T 서브페이지 네비게이션 링크 -->
@@ -627,6 +624,59 @@ ${lastCalculation.bankInfo}
         }, 2200);
       }
     });
+  </script>
+
+  <!-- Global UX Helper: Universal Result Copy & Toast -->
+  <script>
+    window.showToastNotification = function(msg) {
+      let toast = document.getElementById('global-ux-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'global-ux-toast';
+        toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:12px 24px;border-radius:9999px;font-size:14px;font-weight:600;box-shadow:0 10px 25px rgba(0,0,0,0.2);z-index:9999;transition:all 0.3s ease;opacity:0;pointer-events:none;';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(-50%) translateY(0)';
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(10px)';
+      }, 2200);
+    };
+
+    window.copyResultToClipboard = function(customText) {
+      let textToCopy = customText;
+      if (!textToCopy) {
+        const resEl = document.querySelector('#resultBox, .result-card, #result, [id*="result"], [class*="result"], [id*="res"]');
+        textToCopy = resEl ? resEl.innerText.trim() : document.title;
+      }
+      const fullText = textToCopy + "\n\n👉 바로가기: " + window.location.href;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(fullText).then(() => {
+          window.showToastNotification('결과가 클립보드에 복사되었습니다! 🎉');
+        }).catch(() => fallbackCopy(fullText));
+      } else {
+        fallbackCopy(fullText);
+      }
+    };
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try {
+        document.execCommand('copy');
+        window.showToastNotification('결과가 클립보드에 복사되었습니다! 🎉');
+      } catch (e) {
+        window.showToastNotification('복사에 실패했습니다.');
+      }
+      document.body.removeChild(ta);
+    }
   </script>
 
 </body>
