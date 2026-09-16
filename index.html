@@ -35,25 +35,58 @@
 <meta content="https://ott-party-calc.enjoy-onepage.com/og-image.png" name="twitter:image"/>
 <!-- JSON-LD 구조화 데이터 (WebApplication Schema) -->
 <script type="application/ld+json">
-    [
-      {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "OTT 파티 구독료 더치페이 정산기 | 넷플릭스·티빙·디즈니+ 계정공유 분할 계산기",
-        "alternateName": "OTT더치페이",
-        "url": "https://ott-party-calc.enjoy-onepage.com/",
-        "description": "넷플릭스, 디즈니+, 티빙, 웨이브, 왓챠 등 OTT 서비스의 계정 공유 인원수별 월정액 분할 금액과 중도 참여자를 위한 일할 정산금을 1원 단위까지 투명하게 정산합니다.",
-        "applicationCategory": "UtilitiesApplication",
-        "operatingSystem": "All",
-        "inLanguage": "ko",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "KRW"
-        }
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://ott-party-calc.enjoy-onepage.com/#webapp",
+      "name": "OTT 구독료 정산기",
+      "url": "https://ott-party-calc.enjoy-onepage.com/",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "description": "넷플릭스, 디즈니+, 티빙, 웨이브, 왓챠 등 OTT 서비스의 계정 공유 인원수별 월정액 분할 금액과 중도 참여자를 위한 일할 정산금을 1원 단위까지 투명하게 정산합니다.",
+      "image": "https://ott-party-calc.enjoy-onepage.com/og-image.png",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
       }
-    ]
-    </script>
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://ott-party-calc.enjoy-onepage.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "가족이 아닌 지인과 계정을 공유해도 법적으로 문제가 없나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "각 OTT 서비스의 이용약관(동일 가구 규정)에 따라 계정 인증을 요구받을 수 있으나 형사상 처벌 대상은 아닙니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "파티원이 중간에 탈퇴하면 어떻게 정산하나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "일할 계산 공식 [월 분담금 × (이용 일수 ÷ 30일)]을 적용하여 잔여 일수 분담금을 투명하게 환불하는 것이 규칙입니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "OTT 피클플러스나 링키드 같은 중개 플랫폼과 비교하면?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "사설 플랫폼은 수수료(월 1,000~2,000원)를 떼어가지만, 본 계산기를 활용해 지인끼리 직접 파티를 꾸리면 수수료가 0원입니다."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
         body { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); min-height: 100vh; font-family: 'Pretendard', sans-serif; }
