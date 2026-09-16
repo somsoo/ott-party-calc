@@ -2,6 +2,11 @@
 
 <html lang="ko">
 <head>
+    <!-- Performance Optimization: Resource Preconnect -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="index, follow" name="robots"/>
@@ -92,6 +97,17 @@
         body { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); min-height: 100vh; font-family: 'Pretendard', sans-serif; }
         .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 20px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); border: 1px solid rgba(255, 255, 255, 0.18); }
         .receipt { background: #fff; padding: 20px; border-radius: 10px; border: 1px dashed #ccc; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    
+        /* U3 Accessibility: Global Keyboard Focus Ring Standard */
+        :focus-visible {
+            outline: 2px solid #3b82f6 !important;
+            outline-offset: 2px !important;
+        }
+        input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible {
+            outline: 2px solid #2563eb !important;
+            outline-offset: 1px !important;
+        }
+    
     </style>
 <link href="https://ott-party-calc.enjoy-onepage.com/rss.xml" rel="alternate" title="OTT 파티 구독료 더치페이 정산기 | 넷플릭스·티빙·디즈니+ 계정공유 분할 계산기 RSS Feed" type="application/rss+xml"/>
 <link href="https://ott-party-calc.enjoy-onepage.com/sitemap.xml" rel="sitemap" title="Sitemap" type="application/xml"/>
@@ -206,7 +222,7 @@
 <div class="grid grid-cols-2 gap-3">
 <!-- 넷플릭스 -->
 <label class="cursor-pointer">
-<input checked="" class="hidden ott-card-input" name="ott_platform" onchange="handlePlatformChange(this)" type="radio" value="netflix"/>
+<input checked="" class="hidden ott-card-input" name="ott_platform" onchange="handlePlatformChange(this)" type="radio" value="netflix" aria-label="ott_platform" />
 <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
 <span class="text-red-600 font-black text-lg tracking-tighter">NETFLIX</span>
 <span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 17,000원</span>
@@ -214,7 +230,7 @@
 </label>
 <!-- 티빙 -->
 <label class="cursor-pointer">
-<input class="hidden ott-card-input" name="ott_platform" onchange="handlePlatformChange(this)" type="radio" value="tving"/>
+<input class="hidden ott-card-input" name="ott_platform" onchange="handlePlatformChange(this)" type="radio" value="tving" aria-label="ott_platform" />
 <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
 <span class="text-red-500 font-black text-lg tracking-tight">TVING</span>
 <span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 17,000원</span>
@@ -222,7 +238,7 @@
 </label>
 <!-- 디즈니+ -->
 <label class="cursor-pointer">
-<input class="hidden ott-card-input" name="ott_platform" onchange="handlePlatformChange(this)" type="radio" value="disney"/>
+<input class="hidden ott-card-input" name="ott_platform" onchange="handlePlatformChange(this)" type="radio" value="disney" aria-label="ott_platform" />
 <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
 <span class="text-indigo-900 font-black text-lg tracking-tight">Disney+</span>
 <span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 13,900원</span>
@@ -230,7 +246,7 @@
 </label>
 <!-- 직접 입력 -->
 <label class="cursor-pointer">
-<input class="hidden ott-card-input" name="ott_platform" onchange="handlePlatformChange(this)" type="radio" value="custom"/>
+<input class="hidden ott-card-input" name="ott_platform" onchange="handlePlatformChange(this)" type="radio" value="custom" aria-label="ott_platform" />
 <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
 <span class="text-slate-600 font-bold text-lg">직접 입력</span>
 <span class="text-xs text-slate-400 mt-1 font-medium">금액 직접 설정</span>
@@ -261,13 +277,13 @@
 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">단위 정렬 (절사)</label>
 <div class="grid grid-cols-3 gap-2">
 <label class="inline-flex items-center justify-center p-2 border border-slate-200 rounded-lg text-xs cursor-pointer select-none peer-checked:bg-blue-50 peer-checked:border-blue-500">
-<input checked="" class="mr-1.5" name="rounding" type="radio" value="1"/> 원단위 정산
+<input checked="" class="mr-1.5" name="rounding" type="radio" value="1" aria-label="rounding" /> 원단위 정산
             </label>
 <label class="inline-flex items-center justify-center p-2 border border-slate-200 rounded-lg text-xs cursor-pointer select-none">
-<input class="mr-1.5" name="rounding" type="radio" value="10"/> 10원 단위 절사
+<input class="mr-1.5" name="rounding" type="radio" value="10" aria-label="rounding" /> 10원 단위 절사
             </label>
 <label class="inline-flex items-center justify-center p-2 border border-slate-200 rounded-lg text-xs cursor-pointer select-none">
-<input class="mr-1.5" name="rounding" type="radio" value="100"/> 100원 단위 절사
+<input class="mr-1.5" name="rounding" type="radio" value="100" aria-label="rounding" /> 100원 단위 절사
             </label>
 </div>
 </div>
