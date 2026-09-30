@@ -412,11 +412,14 @@
     if (selectedPlatform !== 'custom') {
       feeInput.value = platformPrices[selectedPlatform];
       feeInput.readOnly = true;
+      // 배경 클래스는 하나만 둠: bg-white 와 bg-slate-100 이 같이 있으면 CSS 규칙 순서에 따라 색이 달라짐
+      feeInput.classList.remove('bg-white');
       feeInput.classList.add('bg-slate-100');
     } else {
       feeInput.value = '';
       feeInput.readOnly = false;
       feeInput.classList.remove('bg-slate-100');
+      feeInput.classList.add('bg-white');
       feeInput.focus();
     }
   }
