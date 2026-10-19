@@ -9,7 +9,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="index, follow" name="robots"/>
-<title>OTT 파티 구독료 더치페이 정산기 | 넷플릭스·티빙</title>
+<title>OTT 파티 구독료 더치페이 | 계정 공유 정산기</title>
 <meta content="넷플릭스·디즈니+·티빙·웨이브 계정 공유 인원별 월 구독료 분할과 중도 참여자 일할 정산을 1원 단위로 계산합니다." name="description"/>
 <meta content="OTT 파티 계산기, 넷플릭스 더치페이, OTT 구독료 뿜빠이, 계정 공유 요금 계산기, 디즈니플러스 정산, 피클플러스 대안, OTT 요금 분할" name="keywords"/>
 <link href="https://ott-party-calc.enjoy-onepage.com/" rel="canonical"/>
@@ -513,17 +513,17 @@
     const barcodeId = '#OTT-' + Math.floor(100000 + Math.random() * 900000);
 
     // 영수증에 데이터 렌더링
-    document.getElementById('receipt_date').innerText = dateString;
-    document.getElementById('receipt_platform').innerText = platformText;
-    document.getElementById('receipt_total_price').innerText = totalFee.toLocaleString() + ' KRW';
-    document.getElementById('receipt_members').innerText = members + '명';
-    document.getElementById('receipt_per_person').innerText = perPerson.toLocaleString() + '원';
-    document.getElementById('receipt_bank').innerText = bankText;
-    document.getElementById('receipt_barcode').innerText = barcodeId;
+    document.getElementById('receipt_date').textContent = dateString;
+    document.getElementById('receipt_platform').textContent = platformText;
+    document.getElementById('receipt_total_price').textContent = totalFee.toLocaleString() + ' KRW';
+    document.getElementById('receipt_members').textContent = members + '명';
+    document.getElementById('receipt_per_person').textContent = perPerson.toLocaleString() + '원';
+    document.getElementById('receipt_bank').textContent = bankText;
+    document.getElementById('receipt_barcode').textContent = barcodeId;
 
     // 절사 정보 텍스트 표기
     const roundingInfoText = roundUnit > 1 ? `(${roundUnit}원 단위 이하 절사 적용)` : '(원단위 미만 절사 적용)';
-    document.getElementById('receipt_rounding_info').innerText = roundingInfoText;
+    document.getElementById('receipt_rounding_info').textContent = roundingInfoText;
 
     // 전역 상태 업데이트
     lastCalculation = {
@@ -739,7 +739,7 @@ ${lastCalculation.bankInfo}
       window.copyResultToClipboard = function(textToCopy, customBtn) {
         if (!textToCopy) {
           const resEl = document.querySelector('#result, .result-box, [id*="result"], [class*="result"]');
-          textToCopy = resEl ? resEl.innerText.trim() : window.location.href;
+          textToCopy = resEl ? resEl.textContent.trim() : window.location.href;
         }
         navigator.clipboard.writeText(textToCopy + "\n\n👉 계산기 바로가기: " + window.location.href).then(() => {
           showToastNotification('계산 결과가 클립보드에 복사되었습니다!');
@@ -789,7 +789,7 @@ ${lastCalculation.bankInfo}
       let textToCopy = customText;
       if (!textToCopy) {
         const resEl = document.querySelector('#resultBox, .result-card, #result, [id*="result"], [class*="result"], [id*="res"]');
-        textToCopy = resEl ? resEl.innerText.trim() : document.title;
+        textToCopy = resEl ? resEl.textContent.trim() : document.title;
       }
       const fullText = textToCopy + "\n\n👉 바로가기: " + window.location.href;
       if (navigator.clipboard && navigator.clipboard.writeText) {
