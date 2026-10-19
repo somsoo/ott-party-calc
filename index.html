@@ -462,7 +462,7 @@
     const roundingInput = document.querySelector('input[name="rounding"]:checked');
     const bankInput = document.getElementById('bank_info');
 
-    const totalFee = parseInt(feeInput.value) || 0;
+    const totalFee = Math.max(0, parseInt(feeInput.value) || 0);
     const members = parseInt(membersInput.value) || 1;
     const roundUnit = parseInt(roundingInput.value) || 1;
 
