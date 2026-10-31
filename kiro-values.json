@@ -1,16 +1,89 @@
 {
  "app": "ott-party-calc",
+ "name": "OTT 파티 정산기",
  "host": "ott-party-calc.enjoy-onepage.com",
- "watch": false,
- "status": "unverified",
- "checked": "",
- "soft_days": 60,
- "hard_days": 120,
+ "watch": true,
+ "status": "ok",
+ "checked": "2026-11-01",
+ "soft_days": 45,
+ "hard_days": 90,
  "grace_days": 31,
  "hide": [],
  "pages": [
   "index.html"
  ],
- "values": {},
- "sources": {}
+ "sources": {
+  "gudok": {
+   "type": "gudok",
+   "label": "구독다이어트 요금 점검(공식 요금 페이지 매주 확인)",
+   "cadence": "daily"
+  }
+ },
+ "values": {
+  "netflix": {
+   "v": 17000,
+   "label": "넷플릭스 프리미엄 월 요금",
+   "unit": "원",
+   "src": "gudok",
+   "gudok": {
+    "service": "netflix",
+    "plan": "프리미엄"
+   },
+   "min": 5000,
+   "max": 60000,
+   "show": "won"
+  },
+  "tving": {
+   "v": 17000,
+   "label": "티빙 프리미엄 월 요금(웹 결제)",
+   "unit": "원",
+   "src": "gudok",
+   "gudok": {
+    "service": "tving",
+    "plan": "프리미엄"
+   },
+   "min": 5000,
+   "max": 60000,
+   "show": "won"
+  },
+  "disney": {
+   "v": 13900,
+   "label": "디즈니+ 프리미엄 월 요금",
+   "unit": "원",
+   "src": "gudok",
+   "gudok": {
+    "service": "disney-plus",
+    "plan": "프리미엄"
+   },
+   "min": 5000,
+   "max": 60000,
+   "show": "won"
+  },
+  "netflix_extra": {
+   "v": 5000,
+   "label": "넷플릭스 추가 회원 1명 월 요금",
+   "unit": "원",
+   "src": "gudok",
+   "gudok": {
+    "service": "netflix",
+    "find": "추가 회원 요금은 1명당 월 ([\\d,]+)원"
+   },
+   "min": 1000,
+   "max": 20000,
+   "show": "won"
+  },
+  "netflix_extra_ads": {
+   "v": 4000,
+   "label": "넷플릭스 추가 회원(광고형) 월 요금",
+   "unit": "원",
+   "src": "gudok",
+   "gudok": {
+    "service": "netflix",
+    "find": "광고형 멤버십은 ([\\d,]+)원"
+   },
+   "min": 1000,
+   "max": 20000,
+   "show": "won"
+  }
+ }
 }

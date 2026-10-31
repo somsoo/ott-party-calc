@@ -80,10 +80,10 @@
         },
         {
           "@type": "Question",
-          "name": "OTT 피클플러스나 링키드 같은 중개 플랫폼과 비교하면?",
+          "name": "OTT 계정 공유 중개 플랫폼과 비교하면?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "사설 플랫폼은 수수료(월 1,000~2,000원)를 떼어가지만, 본 계산기를 활용해 지인끼리 직접 파티를 꾸리면 수수료가 0원입니다."
+            "text": "중개 플랫폼은 보통 이용 수수료를 따로 받고, 금액은 플랫폼마다 다르니 각 안내에서 확인하세요. 아는 사람끼리 직접 나눠 내면 중개 수수료 없이 이 계산기로 나눌 수 있습니다."
           }
         }
       ]
@@ -167,7 +167,7 @@
   .ad-bottom ins { min-height: 280px !important; }
 </style>
 <!-- KIRO:VALUES START -->
-<script type="application/json" id="kiro-values">{"app":"ott-party-calc","soft_days":60,"hard_days":120,"grace_days":31,"status":"unverified","values":{}}</script>
+<script type="application/json" id="kiro-values">{"app":"ott-party-calc","checked":"2026-11-01","soft_days":45,"hard_days":90,"grace_days":31,"status":"ok","values":{"netflix":17000,"tving":17000,"disney":13900,"netflix_extra":5000,"netflix_extra_ads":4000}}</script>
 <script>/* Kiro value guard v1 (2026-11-01). Values come from #kiro-values, written by the home server's value watcher.
    window.KIRO_V = values in force today (a scheduled "next" set applies from its date).
    Elements carrying data-v (value or =expression) and data-f (format) are re-rendered from those values;
@@ -389,7 +389,7 @@
 <input checked="" class="hidden ott-card-input" name="ott_platform" onchange="handlePlatformChange(this)" type="radio" value="netflix" aria-label="ott_platform" />
 <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
 <span class="text-red-600 font-black text-lg tracking-tighter">NETFLIX</span>
-<span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 17,000원</span>
+<span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 <span data-v="netflix" data-f="won">17,000원</span></span>
 </div>
 </label>
 <!-- 티빙 -->
@@ -397,7 +397,7 @@
 <input class="hidden ott-card-input" name="ott_platform" onchange="handlePlatformChange(this)" type="radio" value="tving" aria-label="ott_platform" />
 <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
 <span class="text-red-500 font-black text-lg tracking-tight">TVING</span>
-<span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 17,000원</span>
+<span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 <span data-v="tving" data-f="won">17,000원</span></span>
 </div>
 </label>
 <!-- 디즈니+ -->
@@ -405,7 +405,7 @@
 <input class="hidden ott-card-input" name="ott_platform" onchange="handlePlatformChange(this)" type="radio" value="disney" aria-label="ott_platform" />
 <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
 <span class="text-indigo-900 font-black text-lg tracking-tight">Disney+</span>
-<span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 13,900원</span>
+<span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 <span data-v="disney" data-f="won">13,900원</span></span>
 </div>
 </label>
 <!-- 직접 입력 -->
@@ -418,6 +418,7 @@
 </label>
 </div>
 </div>
+<p class="text-xs text-slate-400 mt-2 leading-relaxed">금액은 각 서비스의 공식 월 요금(티빙은 웹 결제 가격)입니다. <a class="underline" href="https://gudok.enjoy-onepage.com/" target="_blank" rel="noopener">구독다이어트</a>가 매주 공식 요금 페이지에서 확인하며, 이 계산기 값은 <span data-v="_checked" data-f="date">2026년 11월 1일</span>에 맞춰 두었습니다.</p>
 <!-- 2. 금액 및 인원수 입력 -->
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 <div>
@@ -537,10 +538,12 @@
 <!-- 기능 컨트롤러 스크립트 -->
 <script>
   // 플랫폼별 기본 요금 데이터 정의
+  // 기본 요금은 홈서버가 구독다이어트 점검 결과로 관리하는 kiro-values 블록에서 온다
+  const KV = window.KIRO_V || {};
   const platformPrices = {
-    netflix: 17000,
-    tving: 17000,
-    disney: 13900,
+    netflix: KV.netflix || 0,
+    tving: KV.tving || 0,
+    disney: KV.disney || 0,
     custom: 0
   };
 
@@ -722,9 +725,9 @@ ${lastCalculation.bankInfo}
 </div>
 <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
 <h4 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-1.5 flex items-center gap-2">
-<span class="w-2 h-2 rounded-full bg-blue-500"></span>추가 가구원 수수료(넷플릭스 가구 외 공유) 반영
+<span class="w-2 h-2 rounded-full bg-blue-500"></span>넷플릭스 추가 회원 요금
           </h4>
-<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">동일 가구 외 프로필 공유 시 부과되는 계정 추가 요금(월 5,000원)을 반영한 하이브리드 정산법을 지원합니다.</p>
+<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">함께 살지 않는 사람을 넷플릭스 '추가 회원'으로 넣으면 1명당 월 <span data-v="netflix_extra" data-f="won">5,000원</span>(광고형 멤버십은 <span data-v="netflix_extra_ads" data-f="won">4,000원</span>)이 따로 붙습니다. 이 계산기는 추가 회원 요금을 자동으로 넣지 않으니, 쓴다면 월 구독 금액에 더해 입력하세요.</p>
 </div>
 <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
 <h4 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-1.5 flex items-center gap-2">
@@ -749,8 +752,8 @@ ${lastCalculation.bankInfo}
 <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">A. 일할 계산 공식 [월 분담금 × (이용 일수 ÷ 30일)]을 적용하여 잔여 일수 분담금을 투명하게 환불하는 것이 규칙입니다.</p>
 </div>
 <div class="border border-slate-200 dark:border-slate-700 rounded-xl p-4 bg-white dark:bg-slate-800">
-<h4 class="font-semibold text-slate-800 dark:text-slate-100 text-sm mb-1">Q. OTT 피클플러스나 링키드 같은 중개 플랫폼과 비교하면?</h4>
-<p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">A. 사설 플랫폼은 수수료(월 1,000~2,000원)를 떼어가지만, 본 계산기를 활용해 지인끼리 직접 파티를 꾸리면 수수료가 0원입니다.</p>
+<h4 class="font-semibold text-slate-800 dark:text-slate-100 text-sm mb-1">Q. OTT 계정 공유 중개 플랫폼과 비교하면?</h4>
+<p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">A. 중개 플랫폼은 보통 이용 수수료를 따로 받고, 금액은 플랫폼마다 다르니 각 안내에서 확인하세요. 아는 사람끼리 직접 나눠 내면 중개 수수료 없이 이 계산기로 나눌 수 있습니다.</p>
 </div>
 </div>
 </div>
