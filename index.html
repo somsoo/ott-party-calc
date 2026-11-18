@@ -167,7 +167,7 @@
   .ad-bottom ins { min-height: 280px !important; }
 </style>
 <!-- KIRO:VALUES START -->
-<script type="application/json" id="kiro-values">{"app":"ott-party-calc","checked":"2026-11-01","soft_days":45,"hard_days":90,"grace_days":31,"status":"ok","values":{"netflix":17000,"tving":17000,"disney":13900,"netflix_extra":5000,"netflix_extra_ads":4000}}</script>
+<script type="application/json" id="kiro-values">{"app":"ott-party-calc","checked":"2026-11-19","soft_days":45,"hard_days":90,"grace_days":31,"status":"ok","values":{"netflix":17000,"tving":17000,"disney":16500,"netflix_extra":5000,"netflix_extra_ads":4000}}</script>
 <script>/* Kiro value guard v1 (2026-11-01). Values come from #kiro-values, written by the home server's value watcher.
    window.KIRO_V = values in force today (a scheduled "next" set applies from its date).
    Elements carrying data-v (value or =expression) and data-f (format) are re-rendered from those values;
@@ -239,6 +239,10 @@
     round: function (x, n) { var p = Math.pow(10, n || 0); return Math.floor(Math.abs(x) * p + 0.5) / p * (x < 0 ? -1 : 1); },
     floor: Math.floor, ceil: Math.ceil, min: Math.min, max: Math.max, abs: Math.abs
   };
+  try {
+    var dv = D.derived || {};
+    for (var dk in dv) if (own(dv, dk)) { var dx = ev(dv[dk]); if (dx !== undefined) V[dk] = dx; }
+  } catch (e) {}
   function ev(expr) {
     expr = String(expr || '');
     if (expr.charAt(0) !== '=') return lookup(expr);
@@ -253,6 +257,11 @@
     for (var i = 0; i < els.length; i++) {
       var t = F(ev(els[i].getAttribute('data-v')), els[i].getAttribute('data-f') || 'raw');
       if (t !== null && els[i].textContent !== t) els[i].textContent = t;
+    }
+    var sh = doc.querySelectorAll('kv-if[data-show]');
+    for (var k = 0; k < sh.length; k++) {
+      var x = ev(sh[k].getAttribute('data-show'));
+      if (x !== undefined) sh[k].hidden = !(x > 0);
     }
   }
   function notice() {
@@ -405,7 +414,7 @@
 <input class="hidden ott-card-input" name="ott_platform" onchange="handlePlatformChange(this)" type="radio" value="disney" aria-label="ott_platform" />
 <div class="ott-card border border-slate-200 rounded-xl p-4 flex flex-col items-center bg-white hover:border-slate-300">
 <span class="text-indigo-900 font-black text-lg tracking-tight">Disney+</span>
-<span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 <span data-v="disney" data-f="won">13,900원</span></span>
+<span class="text-xs text-slate-400 mt-1 font-medium">프리미엄 <span data-v="disney" data-f="won">16,500원</span></span>
 </div>
 </label>
 <!-- 직접 입력 -->
@@ -418,7 +427,7 @@
 </label>
 </div>
 </div>
-<p class="text-xs text-slate-400 mt-2 leading-relaxed">금액은 각 서비스의 공식 월 요금(티빙은 웹 결제 가격)입니다. <a class="underline" href="https://gudok.enjoy-onepage.com/" target="_blank" rel="noopener">구독다이어트</a>가 매주 공식 요금 페이지에서 확인하며, 이 계산기 값은 <span data-v="_checked" data-f="date">2026년 11월 1일</span>에 맞춰 두었습니다.</p>
+<p class="text-xs text-slate-400 mt-2 leading-relaxed">금액은 각 서비스의 공식 월 요금(티빙은 웹 결제 가격)입니다. <a class="underline" href="https://gudok.enjoy-onepage.com/" target="_blank" rel="noopener">구독다이어트</a>가 매주 공식 요금 페이지에서 확인하며, 이 계산기 값은 <span data-v="_checked" data-f="date">2026년 11월 19일</span>에 맞춰 두었습니다.</p>
 <!-- 2. 금액 및 인원수 입력 -->
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 <div>

@@ -4,7 +4,7 @@
  "host": "ott-party-calc.enjoy-onepage.com",
  "watch": true,
  "status": "ok",
- "checked": "2026-11-01",
+ "checked": "2026-11-19",
  "soft_days": 45,
  "hard_days": 90,
  "grace_days": 31,
@@ -47,7 +47,7 @@
    "show": "won"
   },
   "disney": {
-   "v": 13900,
+   "v": 16500,
    "label": "디즈니+ 프리미엄 월 요금",
    "unit": "원",
    "src": "gudok",
